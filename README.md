@@ -8,4 +8,4 @@
 The idea of this project is to create a rock-paper-scissors game. This game will be played entirely on the console using DevTools
 
 ## Screenshots
-!(https://github.com/bardo172/odin-rockpaper/blob/main/screenshot.png?raw=true)
+![Proyect Screenshot](https://github.com/bardo172/odin-rockpaper/blob/main/screenshot.png?raw=true)
