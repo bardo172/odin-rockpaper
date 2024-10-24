@@ -93,23 +93,28 @@ FUNCTION displayGameResults(humanScore, computerScore)
     ELSE (humanScore < computerScore) THEN
         DISPLAY "The Winner is Computer"
 
-    DISPLAY "To play again, use command 'playGame'"
+    DISPLAY "To play again, refresh page or use command 'playGame'"
 
 
 Example Round:
 Input: Player chooses "Rock."
 Output:
-    Round number: 1/5
-    Human selected: Rock
-    Computer selected: Scissors
-    Result: "Human Wins!" 
-    Human Score: 1, Computer Score: 0
+    ┌───────────────────────────────────┐
+    │ Round number: 1/5                 │
+    │ Human selected: Rock              │
+    │ Computer selected: Scissors       │
+    │ Result: Human Wins!               │
+    │ Human Score: 1, Computer Score: 0 │
+    ├───────────────────────────────────┤
 
 Example Game Result:
 Output: 
-    The Winner is Human
-
-    To play again, use command 'playGame'
+    ├───────────────────────────────────┤
+    │       The Winner is Human!        │
+    │                                   │
+    │ To play again, refresh the page   │
+    │ or use the command 'playGame'     │
+    └───────────────────────────────────┘
 
 Conclusion:
 This pseudocode serves as a blueprint for developing a Rock-Paper-Scissors game. Future improvements could include adding features like a graphical interface or support for more players.
@@ -118,5 +123,118 @@ This pseudocode serves as a blueprint for developing a Rock-Paper-Scissors game.
 
 
 // CODE
+
+// Function to start the game
+function playGame() {
+    let humanScore = 0;
+    let computerScore = 0;
+    let round = 0;
+
+    console.log(""); //spaces just because in Chrome the prompt box gets in the way
+    console.log("");
+    console.log("┌───────────────────────────────────┐");
+
+
+    // Play 5 rounds
+    while (round < 5) {
+        round++;
+        let humanChoiceNumeric = getHumanChoice();  // Get the human's choice
+        let computerChoice = getComputerChoice();  // Get the computer's random choice
+        let roundResult = calculateResult(humanChoiceNumeric, computerChoice);  // Get the result of the round
+        
+        // Update scores based on the result
+        if (roundResult === "Human Wins!") {
+            humanScore++;
+        } else if (roundResult === "Computer Wins!") {
+            computerScore++;
+        }
+
+        // Display round results
+        displayRoundResults(humanChoiceNumeric, computerChoice, roundResult, round, humanScore, computerScore);
+    }
+
+    // Display the overall game results
+    displayGameResults(humanScore, computerScore);
+}
+
+// Function to get human's choice and convert it to a numeric value
+function getHumanChoice() {
+    while (true) {
+        let humanChoice = prompt("Please choose Rock, Paper, or Scissors: ");
+        let humanChoiceLower = humanChoice.toLowerCase();
+
+        if (humanChoiceLower === "r" || humanChoiceLower === "rock") {
+            return 1; // Rock
+        } else if (humanChoiceLower === "p" || humanChoiceLower === "paper") {
+            return 2; // Paper
+        } else if (humanChoiceLower === "s" || humanChoiceLower === "scissors") {
+            return 3; // Scissors
+        } else {
+            console.log("Invalid choice, please choose Rock, Paper, or Scissors.");
+        }
+    }
+}
+
+// Function to get a random choice for the computer (1: Rock, 2: Paper, 3: Scissors)
+function getComputerChoice() {
+    return Math.floor(Math.random() * 3) + 1;
+}
+
+// Function to calculate the result of the round
+function calculateResult(humanChoiceNumeric, computerChoice) {
+    if (humanChoiceNumeric === computerChoice) {
+        return "Tie!";
+    } else if (
+        (humanChoiceNumeric === 1 && computerChoice === 3) || // Rock beats Scissors
+        (humanChoiceNumeric === 2 && computerChoice === 1) || // Paper beats Rock
+        (humanChoiceNumeric === 3 && computerChoice === 2)    // Scissors beat Paper
+    ) {
+        return "Human Wins!";
+    } else {
+        return "Computer Wins!";
+    }
+}
+
+// Function to display the results of each round with aligned output
+function displayRoundResults(humanChoiceNumeric, computerChoice, roundResult, round, humanScore, computerScore) {
+    // Convert choices to strings and pad them for alignment
+    let humanChoiceStr = convertChoiceToString(humanChoiceNumeric).padEnd(11, ' ');
+    let computerChoiceStr = convertChoiceToString(computerChoice).padEnd(8, ' ');
+
+    console.log("│ Round number: " + round + "/5                 │");
+    console.log("│ Human selected: " + humanChoiceStr + "       │");
+    console.log("│ Computer selected: " + computerChoiceStr + "       │");
+    console.log("│ Result: " + roundResult.padEnd(25, ' ') + " │");
+    console.log("│ Human Score: " + humanScore + ", Computer Score: " + computerScore + " │");
+    console.log("├───────────────────────────────────┤");
+}
+
+
+// Function to convert the numeric choice to a string (1: Rock, 2: Paper, 3: Scissors)
+function convertChoiceToString(choice) {
+    if (choice === 1) return "Rock";
+    if (choice === 2) return "Paper";
+    if (choice === 3) return "Scissors";
+}
+
+// Function to display the final game results with box-drawing characters
+function displayGameResults(humanScore, computerScore) {
+    console.log("├───────────────────────────────────┤");
+    if (humanScore === computerScore) {
+        console.log("│           It's a Tie!             │");
+    } else if (humanScore > computerScore) {
+        console.log("│       The Winner is Human!        │");
+    } else {
+        console.log("│      The Winner is Computer!      │");
+    }
+    console.log("│                                   │");
+    console.log("│ To play again, refresh the page   │");
+    console.log("│ or use the command 'playGame()'   │");
+    console.log("└───────────────────────────────────┘");
+}
+
+// Start the game
+playGame();
+
 
 
